@@ -27,13 +27,14 @@ class Cliente(Pessoa):
         verbose_name = _('Cliente')
         verbose_name_plural = _('Clientes')
 
+    def __str__(self):
+        return self.nome
 
 
-class produto(models.Model):
-    nome_produto =  models.CharField(_("Nome do Produto"), blank=False, max_length=50, unique=True,)
+class Produto(models.Model):
+    nome_produto = models.CharField(_("Nome do Produto"), blank=False, max_length=50, unique=True)
     preco = models.DecimalField(_("Preço"), null=True, blank=False, max_digits=8, decimal_places=2)
-    estoque = models.IntegerField(_('Estoque'))
-    
+    estoque = models.BooleanField(_("Em Estoque"))
 
     class Meta:
         verbose_name = _('Produto')
@@ -47,14 +48,11 @@ class produto(models.Model):
 class pedido(models.Model):
 
     data_pedido = models.DateTimeField(_('Horario do Pedido'), blank=False)
-    status = models.DecimalField(_("Carga horária"), null=True,blank=False, max_digits=12, decimal_places=3)
     cliente_pedido = models.ForeignKey(Cliente, blank=False, null=True, on_delete= models.SET_NULL)
-    FEITO = "Feito"
     FINALIZADO = "Finalizado"
     ANDAMENTO = "Andamento"
 
     CHOICES = [
-        (FEITO, "Feito"),
         (FINALIZADO,"Finalizado"),
         (ANDAMENTO,"Andamento"),
     
@@ -74,17 +72,19 @@ class pedido(models.Model):
 
     
 class itemPedido(models.Model):
-    produto = models.ForeignKey(produto, blank=True, null=True, on_delete= models.SET_NULL)
+    produto = models.ForeignKey(Produto, blank=True, null=True, on_delete=models.SET_NULL)
     quantidade = models.IntegerField(_("Quantidade Pedida"))
-    pedido = models.ForeignKey(pedido , blank=True, null=True, on_delete= models.SET_NULL)
-    
+    pedido = models.ForeignKey(pedido, blank=True, null=True, on_delete=models.SET_NULL)
 
     def valorPedido(self):
-        return self.quantidade * self.produto.preco
+        if self.produto:
+            return self.quantidade * self.produto.preco
+        else:
+            return 0
 
     class Meta:
         verbose_name = _('Item Pedido')
-        verbose_name_plural = _('Items Pedido')
+        verbose_name_plural = _('Itens Pedido')
 
     def __str__(self):
         return f"Produto {self.produto} / Quantidade: {self.quantidade}"
@@ -94,10 +94,10 @@ class itemPedido(models.Model):
     
 class endereco(models.Model):
     
-    cep = models.CharField(_('CEP'),)
+    cep = models.CharField(_('CEP'), max_length=8)
     logradouro = models.CharField(_('Logradouro'), max_length=200)
     complemento = models.CharField(_('Complemento'), max_length=200)
-    numero_casa = models.CharField(_('Número '),)
+    numero_casa = models.CharField(_('Número '),max_length=6)
     bairro = models.CharField(_('Bairro'), max_length=200)
     cidade = models.CharField(_('Cidade'), max_length=200)
     pais = models.CharField(_('Pais'), max_length=200)
@@ -128,11 +128,29 @@ class formaDeEnvio(models.Model):
         choices=FORMA_ENVIO_CHOICES,
         default='motoboy'
     )
-    prazo_entrega = models.PositiveIntegerField()
-    custo = models.DecimalField(max_digits=5, decimal_places=2)
+
 
     def __str__(self):
-        return f"{self.get_forma_envio_display()} - Entrega em {self.prazo_entrega} dias - Custo: {self.custo} BRL"
+        return f"{self.get_forma_envio_display()}"
 
+
+class formaDePagamento(models.Model):
+
+    FORMA_PAGAMENTO_CHOICES = [
+        ('cartao', 'Cartão'),
+        ('dinheiro', 'Dinheiro'),
+        ('pix', 'Pix'),
+    ]
+
+    nome = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    forma_pagamento = models.CharField(
+        max_length=15,
+        choices=FORMA_PAGAMENTO_CHOICES,
+        default='Cartão'
+    )
+    descricao = models.ForeignKey(itemPedido, blank=True, null=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return f"{self.get_forma_pagamento_display()}"
     
 

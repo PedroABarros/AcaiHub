@@ -1,13 +1,13 @@
 from django.contrib import admin
 
-from acaiAplic.models import Cliente, pedido, itemPedido, produto, endereco, formaDeEnvio, endereco
+from acaiAplic.models import Cliente, pedido, itemPedido, Produto, endereco, endereco, formaDeEnvio, formaDePagamento
 
 @admin.register(Cliente)
 class ClienteAdmin(admin.ModelAdmin):
 
-    list_display = ["Nome", "cpf", "Numero Contato"]
+    list_display = ["nome", "cpf", "numContato"]
 
-@admin.register(produto)
+@admin.register(Produto)
 class ProdutoAdmin(admin.ModelAdmin):
     list_display = ("nome_produto", "preco", "estoque")
 
@@ -17,10 +17,20 @@ class EnderecoAdmin(admin.ModelAdmin):
 
 @admin.register(pedido)
 class PedidoAdmin(admin.ModelAdmin):
-    list_display = ("data_pedido", "status", "cliente_pedido")
+    list_display = ("data_pedido", "status", "cliente_pedido",)
 
 @admin.register(itemPedido)
 class ItemPedidoAdmin(admin.ModelAdmin):
 
     list_display = ("produto", "quantidade", "pedido", "valorPedido")
     readonly_fields = ('valorPedido',)
+
+@admin.register(formaDeEnvio)
+class formaDeEnvioAdmin(admin.ModelAdmin):
+
+    list_display = ("nome", "forma_envio")
+
+@admin.register(formaDePagamento)
+class formaDePagamentoAdmin(admin.ModelAdmin):
+
+    list_display = ("nome", "forma_pagamento", "descricao")
