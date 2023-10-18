@@ -102,7 +102,7 @@ class endereco(models.Model):
     cidade = models.CharField(_('Cidade'), max_length=200)
     pais = models.CharField(_('Pais'), max_length=200)
     uf = models.CharField(_('UF'), max_length=200, blank=False, default=None)
-    endereco_cliente = models.ForeignKey(Cliente, blank=True, default=None, null=True, on_delete= models.DO_NOTHING)
+    endereco_cliente = models.ForeignKey(Cliente, blank=True, default=None, null=True, on_delete= models.SET_NULL)
     
     class Meta:
             verbose_name = _('Endereço')
