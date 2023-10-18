@@ -1,27 +1,26 @@
 from django.contrib import admin
 
-from acaiAplic.models import Curso, Professor, Aluno, Disciplina, Turma
+from acaiAplic.models import Cliente, pedido, itemPedido, produto, endereco, formaDeEnvio, endereco
 
-# Register your models here.
-@admin.register(Curso)
-class CursoAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'carga_horaria')
+@admin.register(Cliente)
+class ClienteAdmin(admin.ModelAdmin):
 
-@admin.register(Professor)
-class ProfessorAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'titulacao', 'curso')
+    list_display = ["Nome", "cpf", "Numero Contato"]
 
+@admin.register(produto)
+class ProdutoAdmin(admin.ModelAdmin):
+    list_display = ("nome_produto", "preco", "estoque")
 
-@admin.register(Aluno)
-class AlunoAdmin(admin.ModelAdmin):
-    list_display = ('matricula', 'nome', 'curso')
+@admin.register(endereco)
+class EnderecoAdmin(admin.ModelAdmin):
+    list_display = ("cidade", "cep", "logradouro", "bairro", "numero_casa", "complemento",  "pais", "uf", "endereco_cliente")
 
+@admin.register(pedido)
+class PedidoAdmin(admin.ModelAdmin):
+    list_display = ("data_pedido", "status", "cliente_pedido")
 
-@admin.register(Disciplina)
-class DisciplinaAdmin(admin.ModelAdmin):
-    list_display = ('curso', 'nome', 'carga_horaria')
+@admin.register(itemPedido)
+class ItemPedidoAdmin(admin.ModelAdmin):
 
-
-@admin.register(Turma)
-class TurmaAdmin(admin.ModelAdmin):
-    list_display = ('ano', 'semestre', 'turma', 'disciplina')
+    list_display = ("produto", "quantidade", "pedido", "valorPedido")
+    readonly_fields = ('valorPedido',)

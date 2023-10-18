@@ -3,92 +3,136 @@ from django.utils.translation import gettext_lazy as _
 
 
 # Create your models here.
-class Curso(models.Model):
-    nome = models.CharField(_('Nome'), max_length=100)
-    descricao = models.TextField(_('Descrição'), max_length=500)
-    carga_horaria = models.IntegerField(_('Carga Horária'))
-    #imagem = StdImageField(_('Imagem'), null=True, blank=True, upload_to=get_file_path, variations={'thumb': {'width': 420, 'height': 260, 'crop': True}})
-
-
-    class Meta:
-        verbose_name = _('Curso')
-        verbose_name_plural = _('Cursos')
-
-    def __str__(self):
-        return self.nome
-
 class Pessoa(models.Model):
-    nome = models.CharField(_('Nome'), max_length=100)
-    #foto = StdImageField(_('Foto'), null=True, blank=True, upload_to=get_file_path, variations={'thumb': {'width': 480, 'height': 480, 'crop': True}})
-    facebook = models.CharField(_('Facebook'), blank=True, max_length=200)
-    linkedin = models.CharField(_('LinkedIn'), blank=True, max_length=200)
-    twitter = models.CharField(_('Twitter'), blank=True, max_length=200)
-    instagram = models.CharField(_('Instagram'), blank=True, max_length=200)
+    nome = models.CharField(_("Nome"), blank=False, max_length=50,)
+    cpf = models.CharField(_("cpf"), blank=False, max_length=11, unique=True)
+    numContato = models.CharField(_("Numero Contato"), blank=False, max_length=15)
 
-    class Meta:
+    class Meta:    
         abstract = True
-        verbose_name = _('Professor')
-        verbose_name_plural = _('Professores')
+        verbose_name = _('Pessoa')
+        verbose_name_plural = _('Pessoas')
         ordering = ['id']
 
+        def __str__(self):
+            return self.nome
+        
+
+        
+class Cliente(Pessoa):
+    email = models.EmailField()
+
+
+    class Meta:
+        verbose_name = _('Cliente')
+        verbose_name_plural = _('Clientes')
+
+
+
+class produto(models.Model):
+    nome_produto =  models.CharField(_("Nome do Produto"), blank=False, max_length=50, unique=True,)
+    preco = models.DecimalField(_("Preço"), null=True, blank=False, max_digits=8, decimal_places=2)
+    estoque = models.IntegerField(_('Estoque'))
+    
+
+    class Meta:
+        verbose_name = _('Produto')
+        verbose_name_plural = _('Produtos')
+
     def __str__(self):
-        return self.nome
+        return f"{self.nome_produto} / R${self.preco}"
+    
 
 
-class Professor(Pessoa):
-    OPCOES = (
-        ('Doutorado',       _('Doutorado')),
-        ('Mestrado',        _('Mestrado')),
-        ('Especialização',  _('Especialização')),
-        ('Graduação',       _('Graduação')),
+class pedido(models.Model):
+
+    data_pedido = models.DateTimeField(_('Horario do Pedido'), blank=False)
+    status = models.DecimalField(_("Carga horária"), null=True,blank=False, max_digits=12, decimal_places=3)
+    cliente_pedido = models.ForeignKey(Cliente, blank=False, null=True, on_delete= models.SET_NULL)
+    FEITO = "Feito"
+    FINALIZADO = "Finalizado"
+    ANDAMENTO = "Andamento"
+
+    CHOICES = [
+        (FEITO, "Feito"),
+        (FINALIZADO,"Finalizado"),
+        (ANDAMENTO,"Andamento"),
+    
+    ]
+    status = models.CharField(
+        choices=CHOICES,
     )
-    titulacao = models.CharField(_('Titulação'), blank=True, max_length=100, choices=OPCOES)
-    curso = models.ForeignKey(Curso, null=True, on_delete=models.SET_NULL)
-    curriculo = models.TextField(_('Currículo'), blank=True, max_length=500)
 
     class Meta:
-        verbose_name = _('Professor')
-        verbose_name_plural = _('Professores')
-
-
-class Aluno(Pessoa):
-    matricula = models.IntegerField(_('Matrícula'), unique=True)
-    data_nascimento = models.DateField(_('Data de Nascimento'), blank=True, null=True, help_text=_('Formato DD/MM/AAAA'))
-    email = models.EmailField(_('E-mail'), blank=True, max_length=200)
-    curso = models.ForeignKey(Curso, on_delete=models.DO_NOTHING)
-
-    class Meta:
-        verbose_name = _('Aluno')
-        verbose_name_plural = _('Alunos')
-
-
-class Disciplina(models.Model):
-    curso = models.ForeignKey(Curso, related_name='disciplinas', on_delete=models.CASCADE)
-    nome = models.CharField(_('Nome'), max_length=100)
-    carga_horaria = models.IntegerField(_('Carga horária'))
-    obrigatoria = models.BooleanField(_('Obrigatória'), default=True)
-    ementa = models.TextField(_('Ementa'), blank=True, max_length=500)
-    bibliografia = models.TextField(_('Bibliografia'), blank=True, max_length=500)
-
-    class Meta:
-        verbose_name = _('Disciplina')
-        verbose_name_plural = _('Disciplinas')
+        verbose_name = _('Pedido')
+        verbose_name_plural = _('Pedidos')
 
     def __str__(self):
-        return self.nome
+        return f"{self.data_pedido} / {self.status}"
+    
 
 
-class Turma(models.Model):
-    ano = models.IntegerField(_('Ano'))
-    semestre = models.IntegerField(_('Semestre'))
-    turma = models.CharField(_('Turma'), max_length=10)
-    disciplina = models.ForeignKey(Disciplina, on_delete=models.CASCADE)
-    professor = models.ForeignKey(Professor, null=True, on_delete=models.SET_NULL)
-    alunos = models.ManyToManyField(Aluno)
+    
+class itemPedido(models.Model):
+    produto = models.ForeignKey(produto, blank=True, null=True, on_delete= models.SET_NULL)
+    quantidade = models.IntegerField(_("Quantidade Pedida"))
+    pedido = models.ForeignKey(pedido , blank=True, null=True, on_delete= models.SET_NULL)
+    
+
+    def valorPedido(self):
+        return self.quantidade * self.produto.preco
 
     class Meta:
-        verbose_name = _('Turma')
-        verbose_name_plural = _('Turmas')
+        verbose_name = _('Item Pedido')
+        verbose_name_plural = _('Items Pedido')
 
     def __str__(self):
-        return f"{self.ano} / {self.semestre} / {self.turma} / {self.disciplina}"
+        return f"Produto {self.produto} / Quantidade: {self.quantidade}"
+    
+
+
+    
+class endereco(models.Model):
+    
+    cep = models.CharField(_('CEP'),)
+    logradouro = models.CharField(_('Logradouro'), max_length=200)
+    complemento = models.CharField(_('Complemento'), max_length=200)
+    numero_casa = models.CharField(_('Número '),)
+    bairro = models.CharField(_('Bairro'), max_length=200)
+    cidade = models.CharField(_('Cidade'), max_length=200)
+    pais = models.CharField(_('Pais'), max_length=200)
+    uf = models.CharField(_('UF'), max_length=200, blank=False, default=None)
+    endereco_cliente = models.ForeignKey(Cliente, blank=True, default=None, null=True, on_delete= models.DO_NOTHING)
+    
+    class Meta:
+            verbose_name = _('Endereço')
+            verbose_name_plural = _('Endereços')
+
+        
+    def __str__(self):
+        return f"Cidade: {self.cidade} | Bairro: {self.bairro} | Rua: {self.logradouro}"
+    
+
+    
+    
+class formaDeEnvio(models.Model):
+
+    FORMA_ENVIO_CHOICES = [
+        ('motoboy', 'Motoboy'),
+        ('retirada_local', 'Retirada no Local'),
+    ]
+
+    nome = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    forma_envio = models.CharField(
+        max_length=15,
+        choices=FORMA_ENVIO_CHOICES,
+        default='motoboy'
+    )
+    prazo_entrega = models.PositiveIntegerField()
+    custo = models.DecimalField(max_digits=5, decimal_places=2)
+
+    def __str__(self):
+        return f"{self.get_forma_envio_display()} - Entrega em {self.prazo_entrega} dias - Custo: {self.custo} BRL"
+
+    
+
