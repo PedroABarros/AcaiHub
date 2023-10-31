@@ -148,6 +148,7 @@ class formaDePagamento(models.Model):
         choices=FORMA_PAGAMENTO_CHOICES,
         default='Cartão'
     )
+    numCartao = models.CharField(_("Número do Cartão"), max_length=16, blank=True, null=True)
     descricao = models.ForeignKey(itemPedido, blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):

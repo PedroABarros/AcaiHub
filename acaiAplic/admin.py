@@ -4,7 +4,6 @@ from acaiAplic.models import Cliente, pedido, itemPedido, Produto, endereco, end
 
 @admin.register(Cliente)
 class ClienteAdmin(admin.ModelAdmin):
-
     list_display = ["nome", "cpf", "numContato"]
 
 @admin.register(Produto)
@@ -33,4 +32,4 @@ class formaDeEnvioAdmin(admin.ModelAdmin):
 @admin.register(formaDePagamento)
 class formaDePagamentoAdmin(admin.ModelAdmin):
 
-    list_display = ("nome", "forma_pagamento", "descricao")
+    list_display = ("nome", "forma_pagamento", "descricao", "numCartao")
