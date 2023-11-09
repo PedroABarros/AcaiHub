@@ -1,52 +1,149 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block titulo %}
     <title>AçaíHub</title>
+    {% endblock %}
+
     {% load bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
-</head>
-<body>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark" aria-label="Fourth navbar example">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">AçaíHub</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-    
-          <div class="collapse navbar-collapse" id="navbarsExample04">
-            <ul class="navbar-nav me-auto mb-2 mb-md-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Principal</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/admin">Admin</a>
-              </li>
-            </ul>
-            <form role="search">
-              <input class="form-control" type="search" placeholder="Buscar" aria-label="Search">
-            </form>
-          </div>
-        </div>
-      </nav>
-    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap">
+
+    <!-- Adicione a biblioteca de ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        body {
+          background-color: #ffd452;
+          transition: background-color 0.3s ease;
+        }
       
+        .navbar-acai {
+          background-color: #563d7c;
+          transition: background-color 0.3s ease;
+        }
+      
+        .navbar-brand-text,
+        .nav-link {
+          font-family: 'Quicksand', sans-serif;
+          color: #ffffff;
+        }
+      
+        .alternar-modo-button,
+        .entrar-button,
+        .registrar-button {
+          background-color: #563d7c;
+          border-color: #563d7c;
+          transition: background-color 0.3s ease;
+        }
+      
+        .alternar-modo-button:hover,
+        .entrar-button:hover,
+        .registrar-button:hover {
+          background-color: #09c184;
+          border-color: #09c184;
+        }
+      
+        .modo-icon {
+          margin-right: 5px;
+        }
+      
+        body.modo-escuro {
+          background-color: #563d7c;
+        }
+      
+        .modo-escuro .navbar-acai {
+          background-color: #ffd452;
+        }
+        
+        .modo-escuro .navbar-brand-text,
+        .modo-escuro .nav-link {
+          color: #563d7c;
+        }
+      
+        .modo-escuro .alternar-modo-button,
+        .modo-escuro .entrar-button,
+        .modo-escuro .registrar-button {
+          background-color: #ffd452;
+          border-color: #ffd452;
+        }
+      
+        .modo-escuro .alternar-modo-button:hover,
+        .modo-escuro .entrar-button:hover,
+        .modo-escuro .registrar-button:hover {
+          background-color: #09c184;
+          border-color: #09c184;
+        }
+      
+        .modo-escuro .text-color-amarelo {
+          color: #ffd452;
+        }
+      </style>
+</head>
 
+<body>
+    {% block conteudo %}
 
-      <div class="px-4 pt-5 my-5 text-center border-bottom">
-        <h1 class="display-4 fw-bold text-body-emphasis">Sistema de Controle Acadêmico Loja AçaíHub</h1>
-        <div class="col-lg-6 mx-auto">
-          <p class="lead mb-4">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
-          <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
-            <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3">Entrar</button>
-            <button type="button" class="btn btn-outline-secondary btn-lg px-4">Inscrever-se</button>
-          </div>
-        </div>
+    <nav class="navbar navbar-expand-md navbar-dark navbar-acai" aria-label="Fourth navbar example">
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center navbar-brand-text" href="#">
+          <img src="../static/hub.png" alt="Logo" width="100" height="90" class="d-inline-block align-text-top">
+          AçaíHub
+        </a>
+        <div class="collapse navbar-collapse" id="navbarsExample04">
+          <ul class="navbar-nav me-auto mb-2 mb-md-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/admin">Admin</a>
+            </li>
+          </ul>
+          <button  class="btn btn-outline-secondary alternar-modo-button" onclick="alternarModo()">
+            <i class="fas fa-sun modo-icon"></i>   
+          </button>
         </div>
       </div>
+    </nav>
 
+    <div class="px-4 pt-5 my-5 text-center border-bottom text-color-amarelo">
+      <h1 class="display-4 fw-bold text-body-emphasis">Bem-vindo ao AçaíHub</h1>
+      <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">Bem-vindo à loja mais querida do Brasil. Entre e fique <br>à vontade para fazer o seu pedido.</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
+          <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3 entrar-button" onclick="window.location.href='/entrar'">
+            Entrar
+          </button>
+          <button type="button" class="btn btn-outline-secondary btn-lg px-4 registrar-button">Registrar-se</button>
+        </div>
+      </div>
+    </div>
 
+    <script>
+      function alternarModo() {
+        var body = document.body;
+        var navbarAcai = document.querySelector('.navbar-acai');
+        var navbarBrandText = document.querySelectorAll('.navbar-brand-text, .nav-link');
+        var alternarModoButton = document.querySelector('.alternar-modo-button');
+        var entrarButton = document.querySelector('.entrar-button');
+        var registrarButton = document.querySelector('.registrar-button');
+        var textDiv = document.querySelector('.text-color-amarelo');
+
+        body.classList.toggle('modo-escuro');
+        navbarAcai.classList.toggle('modo-escuro');
+        alternarModoButton.classList.toggle('modo-escuro');
+        entrarButton.classList.toggle('modo-escuro');
+        registrarButton.classList.toggle('modo-escuro');
+        textDiv.classList.toggle('modo-escuro');
+
+        navbarBrandText.forEach(function(element) {
+        element.classList.toggle('modo-escuro');
+        });
+        }
+    </script>
+
+    {% endblock%}
 </body>
 </html>

@@ -1,0 +1,75 @@
+body {
+    background-color: #ffd452; /* Cor de fundo padrão para o modo claro */
+    transition: background-color 0.3s ease;
+  }
+
+  .navbar-acai {
+    background-color: #42142a; /* Cor de fundo padrão para a navbar no modo claro */
+    transition: background-color 0.3s ease;
+  }
+
+  .navbar-brand-text,
+  .nav-link {
+    font-family: 'Quicksand', sans-serif;
+    color: #ffffff; /* Cor dos textos na navbar no modo claro */
+  }
+
+  .entrar-button,
+  .entrar-button:hover {
+    background-color: #42142a; /* Cor dos botões "Entrar" no modo claro */
+    border-color: #42142a; /* Pode ser a mesma cor para manter uma aparência consistente */
+    color: #ffffff; /* Cor do texto no botão "Entrar" no modo claro */
+  }
+
+  .alternar-modo-button,
+  .entrar-button,
+  .registrar-button {
+    background-color: #42142a; /* Cor dos botões no modo claro */
+    border-color: #42142a; /* Pode ser a mesma cor para manter uma aparência consistente */
+    transition: background-color 0.3s ease;
+    outline: none; /* Remove a borda ao clicar */
+  }
+
+  .alternar-modo-button:hover,
+  .entrar-button:hover,
+  .registrar-button:hover {
+    background-color: #09c184; /* Cor dos botões ao passar o mouse */
+    border-color: #09c184; /* Pode ser a mesma cor para manter uma aparência consistente */
+  }
+
+  /* Adicione estilos para o ícone */
+  .modo-icon {
+    margin-right: 5px;
+  }
+
+  /* Estilos adicionais para o modo escuro */
+  body.modo-escuro {
+    background-color: #42142a; /* Cor de fundo para o modo escuro */
+  }
+
+  .modo-escuro .navbar-acai {
+    background-color: #ffd452; /* Cor de fundo para a navbar no modo escuro */
+  }
+
+  .modo-escuro .navbar-brand-text,
+  .modo-escuro .nav-link {
+    color: #42142a; /* Cor dos textos na navbar no modo escuro */
+  }
+
+  .modo-escuro .alternar-modo-button,
+  .modo-escuro .entrar-button,
+  .modo-escuro .registrar-button {
+    background-color: #ffd452; /* Cor dos botões no modo escuro */
+    border-color: #ffd452; /* Pode ser a mesma cor para manter uma aparência consistente */
+  }
+
+  .modo-escuro .alternar-modo-button:hover,
+  .modo-escuro .entrar-button:hover,
+  .modo-escuro .registrar-button:hover {
+    background-color: #09c184; /* Cor dos botões ao passar o mouse no modo escuro */
+    border-color: #09c184; /* Pode ser a mesma cor para manter uma aparência consistente */
+  }
+
+  .modo-escuro .text-color-amarelo {
+    color: #ffd452; /* Cor do texto no modo escuro */
+  }

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - AçaíHub</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap">
+
+    <!-- Adicione a biblioteca de ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+      body {
+        background-color: #ffd452; /* Cor de fundo padrão para o modo claro */
+        transition: background-color 0.3s ease;
+        font-family: 'Quicksand', sans-serif;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      /* Adicione estilos para o formulário de login */
+      .login-form {
+        max-width: 400px;
+        width: 100%;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .login-logo {
+        margin-bottom: 20px;
+      }
+
+      .login-logo img {
+        width: 100px; /* Ajuste conforme necessário */
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        font-size: 18px;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        color: #563d7c; /* Cor dos textos no modo claro */
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      .login-btn {
+        background-color: #563d7c;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 18px;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .login-btn:hover {
+        background-color: #09c184;
+      }
+
+      .criar-conta-link {
+        background-color: #09c184;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 18px;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 20px; /* Espaçamento superior */
+      }
+
+      .criar-conta-link:hover {
+        background-color: #563d7c;
+      }
+    </style>
+</head>
+
+<body>
+    <div class="login-form">
+        <div class="login-logo" >
+          <img src="../static/hub.png" alt="Logo" width="100" height="90">
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Senha:</label>
+          <input type="password" id="password" name="password" class="form-control" required>
+        </div>
+
+        <button type="button" class="login-btn" onclick="window.location.href='/'">OK</button>
+    </div>
+
+    <a href="#" class="criar-conta-link">Criar Conta</a>
+
+    <script>
+      function login() {
+        // Aqui você pode adicionar lógica para processar o login, como enviar os dados para um servidor.
+        alert("Login realizado com sucesso!");
+      }
+    </script>
+</body>
+</html>
