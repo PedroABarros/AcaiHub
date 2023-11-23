@@ -1,6 +1,6 @@
 from django.contrib import admin
-
-from acaiAplic.models import Cliente, pedido, itemPedido, Produto, endereco, endereco, formaDeEnvio, formaDePagamento
+from django.contrib.auth.admin import UserAdmin
+from acaiAplic.models import Cliente, User, pedido, itemPedido, Produto, endereco, endereco, formaDeEnvio, formaDePagamento
 
 @admin.register(Cliente)
 class ClienteAdmin(admin.ModelAdmin):
@@ -8,7 +8,7 @@ class ClienteAdmin(admin.ModelAdmin):
 
 @admin.register(Produto)
 class ProdutoAdmin(admin.ModelAdmin):
-    list_display = ("nome_produto", "preco", "estoque")
+    list_display = ("nome_produto", "preco", "estoque", "imagem")
 
 @admin.register(endereco)
 class EnderecoAdmin(admin.ModelAdmin):
@@ -33,3 +33,5 @@ class formaDeEnvioAdmin(admin.ModelAdmin):
 class formaDePagamentoAdmin(admin.ModelAdmin):
 
     list_display = ("nome", "forma_pagamento", "descricao", "numCartao")
+
+

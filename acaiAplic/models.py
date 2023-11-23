@@ -1,5 +1,15 @@
+from asyncio import AbstractServer
+import uuid
+from django.contrib.auth.models import AbstractUser
+from stdimage.models import StdImageField
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+
+def get_file_path(_instance, filename):
+    ext = filename.split('.')[-1]
+    filename = f'{uuid.uuid4()}.{ext}'
+    return filename
 
 
 # Create your models here.
@@ -34,6 +44,7 @@ class Cliente(Pessoa):
 class Produto(models.Model):
     nome_produto = models.CharField(_("Nome do Produto"), blank=False, max_length=50, unique=True)
     preco = models.DecimalField(_("Preço"), null=True, blank=False, max_digits=8, decimal_places=2)
+    imagem = StdImageField(_('Imagem'), null=True, blank=True, upload_to=get_file_path, variations={'thumb': {'width': 420, 'height': 260, 'crop': True}})   
     estoque = models.BooleanField(_("Em Estoque"))
 
     class Meta:
@@ -155,3 +166,8 @@ class formaDePagamento(models.Model):
         return f"{self.get_forma_pagamento_display()}"
     
 
+class User(AbstractServer):
+    nome = models.CharField(_("Nome"), blank=False, max_length=50,)
+    cpf = models.CharField(_("cpf"), blank=False, max_length=11, unique=True)
+    numContato = models.CharField(_("Numero Contato"), blank=False, max_length=15)
+    email = models.CharField(_("Email"), blank=False, max_length=50)

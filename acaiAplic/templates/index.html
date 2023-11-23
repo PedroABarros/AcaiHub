@@ -2,6 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +15,6 @@
     {% bootstrap_javascript %}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap">
 
-    <!-- Adicione a biblioteca de ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
@@ -50,7 +50,7 @@
         }
       
         .modo-icon {
-          margin-right: 5px;
+          margin-right: 3px;
         }
       
         body.modo-escuro {
@@ -83,64 +83,99 @@
         .modo-escuro .text-color-amarelo {
           color: #ffd452;
         }
-      </style>
+
+
+        .navbar-btns {
+            margin-left: auto;
+        }
+
+
+        .registrar-text {
+            color: #ffffff;
+        }
+
+        .white-box {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 80px;
+            max-width: 160px;
+            margin: auto;
+            margin-top: 50px;
+        }
+    </style>
 </head>
 
 <body>
     {% block conteudo %}
 
     <nav class="navbar navbar-expand-md navbar-dark navbar-acai" aria-label="Fourth navbar example">
-      <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center navbar-brand-text" href="#">
-          <img src="../static/hub.png" alt="Logo" width="100" height="90" class="d-inline-block align-text-top">
-          AçaíHub
-        </a>
-        <div class="collapse navbar-collapse" id="navbarsExample04">
-          <ul class="navbar-nav me-auto mb-2 mb-md-0">
-            <li class="nav-item">
-              <a class="nav-link" href="/admin">Admin</a>
-            </li>
-          </ul>
-          <button  class="btn btn-outline-secondary alternar-modo-button" onclick="alternarModo()">
-            <i class="fas fa-sun modo-icon"></i>   
-          </button>
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center navbar-brand-text" href="#">
+                <img src="{% static 'hub.png' %}" alt="Logo" width="100" height="90" class="d-inline-block align-text-top">
+                AçaíHub
+            </a>
+            <div class="collapse navbar-collapse" id="navbarsExample04">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin">Admin</a>
+                    </li>
+                </ul>
+                <div class="navbar-btns">
+                    <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3 entrar-button" onclick="window.location.href='/entrar'">
+                        Entrar
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary btn-lg px-4 registrar-button registrar-text" onclick="window.location.href='/registro'">
+                        Registrar-se
+                    </button>
+                </div>
+                <button class="btn btn-outline-secondary alternar-modo-button" onclick="alternarModo()">
+                    <i class="fas fa-sun modo-icon"></i>
+                </button>
+            </div>
         </div>
-      </div>
     </nav>
 
-    <div class="px-4 pt-5 my-5 text-center border-bottom text-color-amarelo">
-      <h1 class="display-4 fw-bold text-body-emphasis">Bem-vindo ao AçaíHub</h1>
-      <div class="col-lg-6 mx-auto">
-        <p class="lead mb-4">Bem-vindo à loja mais querida do Brasil. Entre e fique <br>à vontade para fazer o seu pedido.</p>
-        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5">
-          <button type="button" class="btn btn-primary btn-lg px-4 me-sm-3 entrar-button" onclick="window.location.href='/entrar'">
-            Entrar
-          </button>
-          <button type="button" class="btn btn-outline-secondary btn-lg px-4 registrar-button">Registrar-se</button>
-        </div>
-      </div>
+
+      {% for produto in produtos %}
+          <div class="produto">
+              <img src="{{ produto.imagem.thumb.url }}" alt="{{ produto.nome_produto }}" width="120" height="120">
+              <p>Preço: R$ {{ produto.preco }}</p>
+              <p>Estoque: {{ produto.imagem }}</p>
+          </div>
+      {% endfor %}
+    </div>
+
+
+    
+      <form method="post" enctype="multipart/form-data" class="form-adicionar-produto">
+          {% csrf_token %}
+          {{ form.as_p }}
+      </form> 
     </div>
 
     <script>
-      function alternarModo() {
-        var body = document.body;
-        var navbarAcai = document.querySelector('.navbar-acai');
-        var navbarBrandText = document.querySelectorAll('.navbar-brand-text, .nav-link');
-        var alternarModoButton = document.querySelector('.alternar-modo-button');
-        var entrarButton = document.querySelector('.entrar-button');
-        var registrarButton = document.querySelector('.registrar-button');
-        var textDiv = document.querySelector('.text-color-amarelo');
+        function alternarModo() {
+            var body = document.body;
+            var navbarAcai = document.querySelector('.navbar-acai');
+            var navbarBrandText = document.querySelectorAll('.navbar-brand-text, .nav-link');
+            var alternarModoButton = document.querySelector('.alternar-modo-button');
+            var entrarButton = document.querySelector('.entrar-button');
+            var registrarButton = document.querySelector('.registrar-button');
+            var textDiv = document.querySelector('.text-color-amarelo');
 
-        body.classList.toggle('modo-escuro');
-        navbarAcai.classList.toggle('modo-escuro');
-        alternarModoButton.classList.toggle('modo-escuro');
-        entrarButton.classList.toggle('modo-escuro');
-        registrarButton.classList.toggle('modo-escuro');
-        textDiv.classList.toggle('modo-escuro');
+            body.classList.toggle('modo-escuro');
+            navbarAcai.classList.toggle('modo-escuro');
+            alternarModoButton.classList.toggle('modo-escuro');
+            entrarButton.classList.toggle('modo-escuro');
+            registrarButton.classList.toggle('modo-escuro');
+            textDiv.classList.toggle('modo-escuro');
 
-        navbarBrandText.forEach(function(element) {
-        element.classList.toggle('modo-escuro');
-        });
+            navbarBrandText.forEach(function (element) {
+                element.classList.toggle('modo-escuro');
+            });
+
+            
         }
     </script>
 

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - AçaíHub</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap">
+
+    <!-- Adicione a biblioteca de ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        body {
+            background-color: #ffd452;
+            transition: background-color 0.3s ease;
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        /* Adicione estilos para o formulário de registro */
+        .register-form {
+            max-width: 400px;
+            width: 100%;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-size: 18px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color: #563d7c; /* Cor dos textos no modo claro */
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .register-btn {
+            background-color: #563d7c;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .register-btn:hover {
+            background-color: #09c184;
+        }
+
+        .cancel-btn {
+            background-color: #d9534f;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 18px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .cancel-btn:hover {
+            background-color: #c9302c;
+        }
+
+        
+    </style>
+</head>
+
+<body>
+    <div class="register-form">
+        <div class="form-group">
+            <label for="name">Nome:</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Senha:</label>
+            <input type="password" id="password" name="password" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="cpf">CPF:</label>
+            <input type="text" id="cpf" name="cpf" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="contactNumber">Número de Contato:</label>
+            <input type="text" id="contactNumber" name="contactNumber" class="form-control" required>
+        </div>
+
+        <button type="button" class="register-btn" onclick="register()">Registrar</button>
+        <button type="button" class="cancel-btn" onclick="cancelRegister()">Cancelar</button>
+    </div>
+
+    <script>
+        function register() {
+            // Aqui você pode adicionar lógica para processar o registro, como enviar os dados para um servidor.
+            alert("Registro realizado com sucesso!");
+        }
+
+        function cancelRegister() {
+            window.location.href = '/';
+        }       
+    </script>
+</body>
+
+</html>
