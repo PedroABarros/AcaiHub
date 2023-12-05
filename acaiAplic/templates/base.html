@@ -1,0 +1,201 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}AçaíHub{% endblock %}</title>
+
+    <style>
+        body {
+            background-color: #ffd452;
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar-acai {
+            background-color: #563d7c;
+            color: #ffffff;
+            padding: 10px;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        .white-box {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 600px;
+            margin: auto;
+            margin-top: 50px;
+        }
+
+        .produto-img {
+            width: 100%;
+            height: auto;
+        }
+
+        .ingredientes-checkbox {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .ingredientes-checkbox label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .checkmark {
+            position: relative;
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-color: #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+            left: 7px;
+            top: 3px;
+            width: 5px;
+            height: 10px;
+            border: solid #000;
+            border-width: 0 3px 3px 0;
+            transform: rotate(45deg);
+        }
+
+        input[type="checkbox"]:checked + .checkmark:after {
+            display: block;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        h3 {
+            text-align: center;
+        }
+    </style>
+
+    {% block style %}{% endblock %}
+</head>
+
+<body>
+
+
+    <nav class="navbar navbar-expand-md navbar-dark navbar-acai" aria-label="Fourth navbar example">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center navbar-brand-text" href="/">
+                <img src="{% static 'hub.png' %}" alt="Logo" width="100" height="90" class="d-inline-block align-text-top">
+            </a>
+        </div>
+    </nav>
+
+        <div class="fotosAdmin">
+            <div class="row produtos-container">
+                {% for produto in produtos %}
+                    <div class="col-md-4">
+                        <div class="white-box_produto text-center">
+                            <p class="produto-nome">{{ produto.nome_produto }}</p>
+                            <img src="{{ produto.imagem.url }}" alt="{{ produto.nome_produto }}" class="produto-img">
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="white-box">
+            <div>
+                <img id="imagemSelecionada" alt="Imagem Selecionada" class="produto-img"`style="width: 50px; height= 12px">
+            </div>
+            <h3>Selecione 1 calda</h3>
+            <div class="caldas-checkbox">
+                <label>
+                    <input type="radio" name="calda" value="calda 1"> Morango
+                </label>
+                <label>
+                    <input type="radio" name="calda" value="calda 2"> Paçoca
+                </label>
+                <label>
+                    <input type="radio" name="calda" value="calda 3"> Granola
+                </label>
+            </div>
+    
+            <h3>Selecione até 3 adicionais</h3>
+            <div class="ingredientes-checkbox">
+                <label>
+                    <input type="checkbox" name="ingrediente1" value="Ingrediente 1"> Leite em Pó
+                </label>
+                <label>
+                    <input type="checkbox" name="ingrediente2" value="Ingrediente 2"> Paçoca
+                </label>
+                <label>
+                    <input type="checkbox" name="ingrediente3" value="Ingrediente 3"> Granola
+                </label>
+                <label>
+                    <input type="checkbox" name="ingrediente4" value="Ingrediente 4"> Ovomaltine
+                </label>
+                <label>
+                    <input type="checkbox" name="ingrediente5" value="Ingrediente 5"> Granulado
+                </label>
+                <label>
+                    <input type="checkbox" name="ingrediente6" value="Ingrediente 6"> Confete/m&m
+                </label>
+            </div>
+            <a href="{% url 'finalizar_pedido' %}" class="btn-finalizar-pedido text-white" role="button">
+                AVANÇAR
+            </a>
+        </div>
+
+    <script>
+        const radioCalda = document.querySelectorAll('input[name="calda"]');
+        const checkboxesIngredientes = document.querySelectorAll('input[name^="ingrediente"]');
+
+        radioCalda.forEach((radio) => {
+            radio.addEventListener('change', () => {
+                // Desmarca outras caldas se esta for marcada
+                if (radio.checked) {
+                    radioCalda.forEach((otherRadio) => {
+                        if (otherRadio !== radio) {
+                            otherRadio.checked = false;
+                        }
+                    });
+                }
+            });
+        });
+
+        checkboxesIngredientes.forEach((checkbox) => {
+            checkbox.addEventListener('change', () => {
+                const selectedIngredientes = Array.from(checkboxesIngredientes).filter((c) => c.checked);
+                if (selectedIngredientes.length > 3) {
+                    checkbox.checked = false;
+                }
+            });
+        });
+
+        // Verifica se há uma imagem armazenada no localStorage
+        const urlImagemArmazenada = localStorage.getItem('imagemClicada');
+        if (urlImagemArmazenada) {
+            // Atualiza a imagem na página
+            document.getElementById('imagemSelecionada').src = urlImagemArmazenada;
+            // Limpa a imagem armazenada no localStorage
+            localStorage.removeItem('imagemClicada');
+        }
+    </script>
+
+</body>
+
+</html>
